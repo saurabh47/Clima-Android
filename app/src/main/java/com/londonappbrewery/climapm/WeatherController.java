@@ -88,17 +88,19 @@ public class WeatherController extends AppCompatActivity {
         String city=myIntent.getStringExtra("city");
 
         if(city != null){
-            getWeatherForCurrentLocation();
-        }else{
-            Log.d("clima","City "+city);
+            Log.d("clima","City rec "+city);
             getWeatherForNewCity(city);
+
+        }else{
+            getWeatherForCurrentLocation();
+
         }
     }
 
     // TODO: Add getWeatherForNewCity(String city) here:
     private void getWeatherForNewCity(String city){
         RequestParams params=new RequestParams();
-        params.put("city",city);
+        params.put("q",city);
         params.put("appid",APP_ID);
 
         networkingCall(params);
@@ -212,5 +214,10 @@ public class WeatherController extends AppCompatActivity {
     // TODO: Add onPause() here:
 
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mLocationManager!=null)
+            mLocationManager.removeUpdates(mLocationListener);
+    }
 }
